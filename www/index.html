@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="lib/ion-floating-menu/dist/ion-floating-menu.css" rel="stylesheet"/>
+
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+    <script src="js/bd/pouchdb-5.4.4.min.js"></script>
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="lib/ngCordova/dist/ng-cordova.js"></script>
+    <script src="cordova.js"></script>
+    <script src="lib/ion-floating-menu/dist/ion-floating-menu.js"></script>
+
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/services.js"></script>
+    
+  </head>
+
+  <body ng-app="starter">
+
+    <ion-nav-view></ion-nav-view>
+
+    <!-- Modais do aplicativo -->
+
+    <!-- Modal do Perfil Conta -->
+    <script id="perfil.html" type="text/ng-template">
+        <ion-modal-view ng-controller="PerfilCtrl">
+            <ion-header-bar>
+                <h1 class="title">Conta</h1>
+                <div class="buttons">
+                    <button class="button button-clear" ng-click="closePerfil()">Fechar</button>
+                </div>
+             </ion-header-bar>
+            
+            <ion-floating-button click="editarPerfil()" has-footer="false" icon="ion-edit" iconColor="#fff"></ion-floating-button>
+            <ion-content>
+                <div class="list">
+                    <a class="item item-avatar item-icon-right">
+                        <img src="img/perfil.jpg">
+                        <h2 class="titlePerfil">douglasb </h2>
+                    </a>
+
+                    <div class="item item-divider">
+                        <i class="icon ion-clipboard"></i>&nbsp;Dados da Conta
+                    </div>
+
+                    <a class="item" href="#">
+                        <b>Nome Completo:</b>&nbsp;&nbsp;{{nomeCompleto}}
+                    </a>
+
+                    <a class="item" href="#">
+                        <b>Endereço:</b>&nbsp;&nbsp;{{endereco}}
+                    </a>
+
+                    <a class="item" href="#">
+                        <b>Login:</b>&nbsp;&nbsp;{{login}}
+                    </a>
+
+                    <div class="item item-divider">
+                        <i class="icon ion-gear-a"></i>&nbsp;Configurações da Conta
+                    </div>
+
+                    <ul class="list">
+                        <li class="item item-checkbox">
+                            <label class="checkbox">
+                                <input type="checkbox" checked="">
+                            </label>
+                            Ativar som das notificações
+                        </li>
+                        
+                        <li class="item item-checkbox">
+                            <label class="checkbox">
+                                <input type="checkbox" checked="">
+                            </label>
+                            Não Perturbe
+                        </li>
+                    
+                        <li class="item item-checkbox">
+                            <label class="checkbox">
+                                <input type="checkbox" checked="">
+                            </label>
+                            Verificar notificações a cada 5min
+                        </li>
+
+                        <div class="item item-divider">
+                            <i class="icon ion-help-circled"></i>&nbsp;Sobre e ajuda
+                        </div>
+
+                        <a class="item" href="#">
+                            Sobre
+                        </a>
+
+                        <a class="item" href="#">
+                            FAQ
+                        </a>
+
+                        <a class="item" href="#">
+                            Termos e Política de Privacidade
+                        </a>
+                    </ul>
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+
+    <!-- Modal de Edição de Perfil de Conta -->
+    <script id="editarPerfil.html" type="text/ng-template">
+        <ion-modal-view ng-controller="PerfilCtrl">
+            <ion-header-bar>
+                <h1 class="title">Edição de Conta</h1>
+                <div class="buttons">
+                    <button class="button button-clear" ng-click="closeEditarPerfil()">Fechar</button>
+                </div>
+            </ion-header-bar>
+          
+            <ion-content>
+                <div class="list">
+                    <a class="item item-avatar item-icon-right">
+                        <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
+                        <img ng-show="imgURI === undefined" ng-src="img/frame-landscape.png" class="semImagem">
+                        <i class="icon ion-ios-camera" ng-click="showOpcoesFoto()"></i>
+                    </a>
+
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Nome Completo</span>
+                        <input type="text" value="Douglas Bilhar">
+                    </label>
+
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Endereço</span>
+                        <input type="text" value="Rua Herminio Dal Mas">
+                    </label>
+
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">E-mail</span>
+                        <input type="email" value="douglasbilharc@gmail.com">
+                    </label>
+
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Login</span>
+                        <input type="text" value="douglasb">
+                    </label>
+
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Senha</span>
+                        <input type="password" value="asdasd">
+                    </label>
+
+                     <label class="item item-input item-stacked-label">
+                        <span class="input-label">Confirmar Senha</span>
+                        <input type="password" value="asdasd">
+                    </label>
+                </div>
+
+                <button class="button button-full button-positive">
+                    Salvar
+                </button>
+
+                <button class="button button-full button-assertive" ng-click="closeEditarPerfil()">
+                    Cancelar
+                </button>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+
+    <!-- Modal de Cadastro de Usuário -->
+    <script id="cadastroUsuario.html" type="text/ng-template">
+        <ion-modal-view ng-controller="CadastroUsuarioCtrl">
+            <ion-header-bar>
+                <h1 class="title">Cadastro de Usuário</h1>
+                <div class="buttons">
+                    <button class="button button-clear" ng-click="closeCadastroUsuario()">Fechar</button>
+                </div>
+            </ion-header-bar>
+            <ion-content>
+                <form ng-submit="doLogin()">
+                    <div class="list">
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Nome Completo *</span>
+                            <input type="text">
+                        </label>
+
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Endereço *</span>
+                            <input type="text">
+                        </label>
+
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">E-mail *</span>
+                            <input type="email">
+                        </label>
+
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Login *</span>
+                            <input type="text">
+                        </label>
+
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Senha *</span>
+                            <input type="password">
+                        </label>
+
+                         <label class="item item-input item-stacked-label">
+                            <span class="input-label">Confirmar Senha *</span>
+                            <input type="password">
+                        </label>
+                    </div>
+
+                    <button class="button button-full button-positive">
+                        Cadastrar
+                    </button>
+
+                    <button class="button button-full button-assertive" ng-click="closeCadastroUsuario()">
+                        Cancelar
+                    </button>
+                </form>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+
+    <!-- Modal Nova Compra -->
+    <script id="novaCompra.html" type="text/ng-template">
+        <ion-modal-view >
+            <ion-header-bar>
+                <h1 class="title">Nova Compra</h1>
+                <div class="buttons">
+                    <button class="button button-clear" ng-click="closeNovaCompra()">Fechar</button>
+                </div>
+            </ion-header-bar>
+            <ion-content>
+                <form ng-submit="doLogin()" ng-controller="NovaCompraCtrl">
+                    <div class="list">
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Produto *</span>
+                            <input type="text" placeholder="Digite no mínimo 20 caracteres" ng-model="produtoDesc">
+                        </label>
+
+                        <label class = "item item-input item-select">
+                            <div class = "input-label">
+                                Categoria *
+                            </div>
+                          
+                            <select ng-model="categoriaProd">
+                                <option selected>Selecione</option>
+                                <option value="Eletrodomestico">Eletrodoméstico</option>
+                                <option value="Eletronico">Eletrônico</option>
+                                <option value="Vestuario">Vestuário</option>
+                            </select>
+                        </label>
+
+                        <div class="item range range-positive">
+                            Distância *
+                            <input type="range" min="0" max="{{distancia.max}}" value="{{distancia.min}}" step="1000" ng-model="distancia.value">
+                                        {{distancia.value / 1000}}&nbsp;Km
+                                        
+                         </div>
+
+                         <div class="item range range-positive">
+                            Preço *
+                            <input type="range" min="0" max="{{preco.max}}" value="{{preco.min}}" step="1" ng-model="preco.value">
+                                        R$&nbsp;{{preco.value}}&nbsp;,00
+                                        
+                         </div>
+      
+                    </div>
+
+                    <button class="button button-full button-positive" ng-click="addNewCompra()">
+                        Cadastrar
+                    </button>
+
+                    <button class="button button-full button-assertive" ng-click="closeNovaCompra()">
+                        Cancelar
+                    </button>
+                </form>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+
+    <!-- Modal Editar Compra -->
+    <script id="editarCompra.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar>
+                <h1 class="title">Edição de Compra</h1>
+                <div class="buttons">
+                    <button class="button button-clear" ng-click="closeEditarCompra()">Fechar</button>
+                </div>
+            </ion-header-bar>
+            <ion-content>
+                <form ng-submit="doLogin()">
+                    <div class="list">
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Produto *</span>
+                            <input type="text" ng-model="produtoDesc">
+                        </label>
+
+                        <label class = "item item-input item-select">
+                            <div class = "input-label">
+                                Categoria *
+                            </div>
+                          
+                            <select ng-model="categoriaProd">
+                                <option>Selecione</option>
+                                <option selected>Eletrodoméstico</option>
+                                <option>Eletrônico</option>
+                                <option>Vestuário</option>
+                            </select>
+                        </label>
+
+                        <div class="item range range-positive">
+                            Distância *
+                            <input type="range" min="0" max="{{distancia.max}}" value="{{distancia.min}}" step="1000" ng-model="distancia.value">
+                                        {{distancia.value / 1000}}&nbsp;Km
+                                        
+                         </div>
+
+                         <div class="item range range-positive">
+                            Preço *
+                            <input type="range" min="0" max="{{preco.max}}" value="{{preco.min}}" step="1" ng-model="preco.value">
+                                        R$&nbsp;{{preco.value}}&nbsp;,00
+                                        
+                         </div>
+                    </div>
+
+                    <button class="button button-full button-positive">
+                        Salvar
+                    </button>
+
+                    <button class="button button-full button-assertive" ng-click="closeEditarCompra()">
+                        Cancelar
+                    </button>
+                </form>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+
+    <!-- Modal Chat -->
+    <script id="chat.html" type="text/ng-template">
+        <ion-modal-view ng-controller="ChatCtrl">
+            <ion-header-bar>
+                <h1 class="title">Chat</h1>
+                <div class="buttons">
+                    <button class="button button-clear" ng-click="closeChat()">Fechar</button>
+                </div>
+            </ion-header-bar>
+            <ion-content>
+                <div class="list list-inset">
+                    <label class="item item-input">
+                        <i class="icon ion-search placeholder-icon"></i>
+                        <input type="text" placeholder="Pesquisar">
+                    </label>
+                </div>
+                <div class="list">
+                    <a class="item item-avatar" ng-repeat="contato in contatos" href="#">
+                        <img src="{{contato.imgEmpresa}}">
+                        <p class="dataItens">{{contato.data}}</p>
+                        <h2 class="titleLocais">{{contato.loja}}</h2>
+                        <p>{{contato.texto}}</p>
+                        <span class="badge badge-assertive">1</span>
+                    </a>
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+    <script id="templates/intro.html" type="text/ng-template"> 
+      <ion-view view-title="Intro">
+        <ion-nav-buttons side="left">
+          <button class="button button-positive button-clear no-animation"
+                  ng-click="startApp()" ng-show="!slideIndex">
+            Skip Intro
+          </button>
+          <button class="button button-positive button-clear no-animation"
+                  ng-click="previous()" ng-show="slideIndex > 0">
+            Previous Slide
+          </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right"> 
+          <button class="button button-positive button-clear no-animation"
+                  ng-click="next()" ng-show="slideIndex != 2">
+            Next
+          </button>
+          <button class="button button-positive button-clear no-animation"
+                  ng-click="startApp()" ng-show="slideIndex == 2">
+            Start using MyApp
+          </button>
+        </ion-nav-buttons>
+        <ion-slide-box on-slide-changed="slideChanged(index)">
+          <ion-slide>
+            <h3>Thank you for choosing the Awesome App!</h3>
+            <div id="logo">
+              <img src="http://code.ionicframework.com/assets/img/app_icon.png">
+            </div>
+            <p>
+              We've worked super hard to make you happy.
+            </p>
+            <p>
+              But if you are angry, too bad.
+            </p>
+          </ion-slide>
+          <ion-slide>
+            <h3>Using Awesome</h3>
+            
+            <div id="list">
+              <h5>Just three steps:</h5>
+              <ol>
+                <li>Be awesome</li>
+                <li>Stay awesome</li>
+                <li>There is no step 3</li>
+              </ol>
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <h3>Any questions?</h3>
+            <p>
+              Too bad!
+            </p>
+          </ion-slide>
+        </ion-slide-box>
+      </ion-view>
+    </script>
+    <!-- Fim Modais do Aplicativo -->
+  </body>
+</html>

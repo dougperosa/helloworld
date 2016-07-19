@@ -1,0 +1,44 @@
+<ion-view view-title="Minhas Compras">
+	<ion-floating-button ng-click="novaCompra()" has-footer="false" icon="ion-plus" iconColor="#fff"></ion-floating-button>
+	  <ion-content>
+	  	<div class="list list-inset">
+		  <label class="item item-input">
+		    <i class="icon ion-search placeholder-icon"></i>
+		    <input type="text" placeholder="Pesquisar">
+		  </label>
+		</div>
+		<div class="item item-divider" id="aberta">
+         	<i class="icon ion-ios-checkmark"></i>&nbsp;Abertas
+        </div>
+	    <div class="list">
+		    <a class="item item-avatar" ng-repeat="compraAberta in comprasAbertas" on-hold="showActions('{{compraAberta.doc.produto}}','{{compraAberta.doc._id}}', '{{compraAberta.doc._rev}}')">
+		      <img src="img/perfil.jpg">
+		      <p class="dataItens">{{compraAberta.doc.data}}</p>
+		      <h2 class="titleLocais">{{compraAberta.doc.produto}}</h2>
+		      <p>Nenhuma oferta</p>
+		    </a>
+		    <!-- 
+		    <div class="item item-divider" id="atendimento">
+	         	<i class="icon ion-ios-information"></i>&nbsp;Em atendimento
+	        </div>
+	        <a class="item item-avatar" ng-repeat="compraAtendimento in comprasAtendimento" href="{{compraAtendimento.link}}{{compraAtendimento.title}}" on-hold="showActions('{{compraAtendimento.title}}')">
+		      <img src="{{compraAtendimento.img}}">
+		      <p class="dataItens">{{compraAtendimento.data}}</p>
+		      <h2 class="titleLocais">{{compraAtendimento.title}}</h2>
+		      <p>{{compraAtendimento.texto}}</p>
+		      <span class="badge badge-assertive">1</span>
+		    </a>
+
+	        <div class="item item-divider" id="fechada">
+	         	<i class="icon ion-ios-close"></i>&nbsp;Fechadas
+	        </div>
+	        <a class="item item-avatar" ng-repeat="compraFechada in comprasFechadas" href="{{compraFechada.link}}{{compraFechada.compra}}" on-hold="showActions('{{compraFechada.compra}}')">
+		      <img src="{{compraFechada.img}}">
+		      <p class="dataItens">{{compraFechada.data}}</p>
+		      <h2 class="titleLocais">{{compraFechada.title}}</h2>
+		      <p>{{compraFechada.texto}}</p>
+		    </a>
+		    -->
+		</div>
+	 </ion-content>
+</ion-view>

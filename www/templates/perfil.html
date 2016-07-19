@@ -1,0 +1,37 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">Cadastro de Usuário</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeLogin()">X</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+  		<div class="list">
+	  		<a class="item item-avatar" href="#/app/detalhes/Mecânica">
+	    		<img src="img/perfil.jpg">
+	    		<h2 class="titlePerfil">douglasb </h2>
+	    		<span class="badge"><img src="img/editar.png"></span>
+	  		</a>
+
+	  		<div class="item item-divider">
+	    		<i class="icon ion-clipboard"></i>&nbsp;Dados da Conta
+	  		</div>
+
+	  		<a class="item" href="#">
+	    		<b>Nome Completo:</b>&nbsp;&nbsp;{{nomeCompleto}}
+	  		</a>
+
+	  		<a class="item" href="#">
+	    		<b>Endereço:</b>&nbsp;&nbsp;{{endereco}}
+	  		</a>
+
+	  		<a class="item" href="#">
+	    		<b>Login:</b>&nbsp;&nbsp;{{login}}
+	  		</a>
+
+	  		<div class="item item-divider">
+	    		<i class="icon ion-gear-a"></i>&nbsp;Configurações
+	  		</div>
+		</div>
+  	</ion-content>
+</ion-view>
